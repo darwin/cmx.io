@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Comix Editor</title>
+    <link rel="stylesheet" href="styles/editor.css" type="text/css"/>
+    <link rel="shortcut icon" href="./editor.ico" type="image/x-icon"/>
+    <script src="scripts/editor.js"></script>
+  </head>
+  <body>
+    <div class="unsupported" style="display:none">
+      <h2>Hey there,</h2>
+      <p>I wrote the Comix Editor on Chrome(webkit) using some tricks.</p>
+      <p>Currently it is broken on Firefox, Opera and I don't belive it could ever run on IE.</p>
+      <p>Please, run it in the latest <a href="https://www.google.com/intl/en/chrome/browser/">Chrome</a> or <a href="http://www.apple.com/safari/">Safari</a>.</p>
+      <p class="note">Interested in porting it to your favorite browser? <a href="https://github.com/darwin/cmx.js">Check out the sources</a>.</p>
+    </div>
+    <div class="supported" style="display:none">
+      <div id="stage-wrapper"></div>
+      <div id="desk">
+        <div id="editor"></div>
+        <div id="status">
+          <button id="apply">Apply</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
