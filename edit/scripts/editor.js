@@ -29457,7 +29457,8 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
 })( window );
 (function() {
-  var Editor, getParameterByName;
+  var Editor, getGistUrl, getParameterByName,
+    __slice = [].slice;
 
   Editor = (function() {
 
@@ -29650,14 +29651,19 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     }
   };
 
+  getGistUrl = function(id) {
+    return "https://api.github.com/gists/" + id;
+  };
+
   $(function() {
-    var editor, env, src;
+    var editor, env, hash, src;
     Modernizr.Detectizr.detect();
     env = Modernizr.Detectizr.device;
     if (env.browserEngine === "webkit") {
       $(".supported").css("display", "block");
     } else {
       $(".unsupported").css("display", "block");
+      return;
     }
     if (env.os === "mac") {
       $('#apply').append(" (CMD+S)");
@@ -29667,11 +29673,41 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     console.log("editor started");
     editor = new Editor();
     window.cmxEditor = editor;
-    src = getParameterByName("src") || "sample.html";
+    src = getParameterByName("src");
+    hash = "?";
+    if (!src) {
+      hash = window.location.hash.substring(1);
+      if (hash) {
+        src = getGistUrl(hash);
+      } else {
+        src = window.location.href + "sample.html";
+      }
+    }
+    $(document).ajaxError(function() {
+      var args, event;
+      event = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      $(".supported").css("display", "none");
+      $(".error").css("display", "block");
+      $('#error-response').text(args[0].responseText);
+      $('#error-gist-number').text('#' + hash);
+      $('#error-gist-link').attr('href', src).text(src);
+      $('#error-gist-index-link').attr('href', "https://gist.github.com/" + hash);
+      return console.log("failed to fetch content", args);
+    });
+    console.log("fetching " + src + "...");
     return $.get(src, function(content) {
+      var target, _ref, _ref1;
+      console.log("got", content);
+      target = src;
+      if (typeof content === "object") {
+        target = content.html_url;
+        content = (_ref = content.files) != null ? (_ref1 = _ref["index.html"]) != null ? _ref1.content : void 0 : void 0;
+      }
+      $('#targetFile').attr('href', target).text(target);
       editor.setContent(content);
       editor.saveFile();
-      return console.log("editor ready");
+      console.log("editor ready");
+      return $('#desk').css('display', 'block');
     });
   });
 

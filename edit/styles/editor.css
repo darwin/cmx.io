@@ -17,6 +17,10 @@ body, html {
   color: #999;
 }
 
+.error {
+  padding: 20px;
+}
+
 #desk .ace_editor {
   font-size: 12px;
   line-heiht: 1em;
@@ -72,10 +76,20 @@ body, html {
   height: 29px;
   left: 0px;
   right: 0px;
+  font-size: 14px;
+  line-height: 29px;
+}
+
+.target {
+  padding: 0px 10px;
 }
 
 #apply {
   position: absolute;
   bottom: 5px;
   right: 10px;
+}
+
+#error-gist-number {
+  color: red;
 }

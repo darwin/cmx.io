@@ -17,12 +17,24 @@
     </div>
     <div class="supported" style="display:none">
       <div id="stage-wrapper"></div>
-      <div id="desk">
+      <div id="desk" style="display:none">
         <div id="editor"></div>
         <div id="status">
+          <div class="target">You are editing <a id="targetFile" target="_blank" href=""></a></div>
           <button id="apply">Apply</button>
         </div>
       </div>
+    </div>
+    <div class="error" style="display:none">
+      <h2>Unable to read gist <span id="error-gist-number"></span></h2>
+      <pre id="error-response"></pre>
+      <p>Please make sure that</p>
+      <ul>
+        <li>the gist <a id="error-gist-link" href=""></a> really exists</li>
+        <li>the gist contains <a id="error-gist-index-link">index.html</a> file with comix source code</li>
+        <li>your browser is not over <a href="http://developer.github.com/v3/#rate-limiting">GitHub API limit quota</a></li>
+      </ul>
+      <p>Here is an example of a working gist <a href="http://cmx.io/edit/#74e3dc0e166daf1ec668">http://cmx.io/edit/#74e3dc0e166daf1ec668</a> which reads <a href="https://gist.github.com/74e3dc0e166daf1ec668">https://gist.github.com/74e3dc0e166daf1ec668</a>.</p>
     </div>
   </body>
 </html>

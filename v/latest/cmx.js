@@ -23221,7 +23221,7 @@ define("svginnerhtml", function(){});
           return _this.controlDragStart(bone);
         }).on("dragend", function(bone) {
           _this.controlDragEnd(bone);
-          return _this.controlPoseUndoClose();
+          return _this.controlUndoClose();
         }).on("drag", function(bone) {
           _this.entity.skelet.moveBone(bone.name, d3.event.dx, d3.event.dy, false);
           return _this.entity.throttledUpdate();
@@ -23669,7 +23669,7 @@ define("svginnerhtml", function(){});
           return _this.controlDragStart(bone);
         }).on("dragend", function(bone) {
           _this.controlDragEnd(bone);
-          return _this.controlPoseUndoClose();
+          return _this.controlUndoClose();
         }).on("drag", function(bone) {
           _this.entity.skelet.moveBone(bone.name, d3.event.dx, d3.event.dy, false);
           return _this.entity.throttledUpdate();
