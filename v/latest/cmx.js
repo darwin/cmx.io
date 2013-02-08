@@ -24204,7 +24204,8 @@ define("svginnerhtml", function(){});
         sceneModel.materialize($scene);
       }
       console.log("cmx ready", cmx);
-      return $("body").trigger("cmx:ready", cmx);
+      $("body").trigger("cmx:ready", cmx);
+      return typeof parent !== "undefined" && parent !== null ? typeof parent.messageFromCMX === "function" ? parent.messageFromCMX("cmx:ready", cmx) : void 0 : void 0;
     };
     window.WebFontConfig = {
       custom: {

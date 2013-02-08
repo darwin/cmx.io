@@ -29594,10 +29594,6 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         setInterval(function() {
           return set.css("min-height", "");
         }, 200);
-        set.on('cmx:ready', function(event, cmx) {
-          window.innerCmx = cmx;
-          return cmx.makeEditable();
-        });
         set.on('cmx:updated', throttle(function() {
           var chunks, patched;
           invocations++;
@@ -29653,6 +29649,14 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
   getGistUrl = function(id) {
     return "https://api.github.com/gists/" + id;
+  };
+
+  window.messageFromCMX = function(event, cmx) {
+    switch (event) {
+      case 'cmx:ready':
+        window.innerCmx = cmx;
+        return cmx.makeEditable();
+    }
   };
 
   $(function() {
