@@ -21469,9 +21469,12 @@ define("svginnerhtml", function(){});
       };
 
       Drawable.prototype.prepareFrame = function(framePos, frameRot) {
-        var angle, f, frame, len, vecAngle, vx, vy, _ref;
+        var angle, f, frame, len, r, vecAngle, vx, vy, _ref;
+        r = function(num) {
+          return Math.round(num);
+        };
         f = function(p) {
-          return "" + p.x + "," + p.y;
+          return "" + (r(p.x)) + "," + (r(p.y));
         };
         frame = [];
         if (framePos) {
@@ -21479,11 +21482,11 @@ define("svginnerhtml", function(){});
         }
         if (frameRot && framePos) {
           vecAngle = function(x, y) {
-            var angle, dot, len, r;
+            var angle, dot, len, rad;
             len = Math.sqrt(x * x + y * y);
             dot = x / len;
-            r = Math.acos(dot);
-            angle = r * (360 / (2 * Math.PI)) - 90;
+            rad = Math.acos(dot);
+            angle = rad * (360 / (2 * Math.PI)) - 90;
             if (y < 0) {
               angle = 180 - angle;
             }
@@ -21492,7 +21495,7 @@ define("svginnerhtml", function(){});
           vx = frameRot.x - framePos.x;
           vy = frameRot.y - framePos.y;
           _ref = vecAngle(vx, vy), angle = _ref[0], len = _ref[1];
-          frame.push("rotate(" + angle + ")");
+          frame.push("rotate(" + (r(angle)) + ")");
         }
         return frame.join("");
       };
@@ -22338,7 +22341,7 @@ define("svginnerhtml", function(){});
       };
     };
     render = function(Δroot, back, Δbefore) {
-      var bbox, dynamic, ex, ey, line, magnitude, polyline, textUpdater, xkcd, xkcdInterpolator, xl, yl, Δel, Δpath, Δtext,
+      var backInterpolator, bbox, dynamic, ex, ey, line, magnitude, polyline, textUpdater, xkcd, xkcdInterpolator, xl, yl, Δel, Δpath, Δtext,
         _this = this;
       if (back == null) {
         back = false;
@@ -22440,6 +22443,16 @@ define("svginnerhtml", function(){});
         }
         return res;
       };
+      backInterpolator = function(pts) {
+        var r, result;
+        r = function(num) {
+          return Math.round(num * 100) / 100;
+        };
+        result = pts.map(function(d) {
+          return [r(d[0]), r(d[1])];
+        });
+        return result.join("L");
+      };
       Δpath = Δel.append("path").attr("class", "cmx-path");
       dynamic(this["fill"], function(val) {
         if (val) {
@@ -22458,7 +22471,7 @@ define("svginnerhtml", function(){});
           }
         });
         dynamic(this["points"], function(val) {
-          return Δpath.attr("d", line.interpolate("linear")(val));
+          return Δpath.attr("d", line.interpolate(backInterpolator)(val));
         });
       } else {
         dynamic(this["stroke-width"], function(val) {
@@ -23699,7 +23712,14 @@ define("svginnerhtml", function(){});
       __extends(Drawing, _super);
 
       function Drawing(scene, drawlist) {
-        this.drawlist = drawlist != null ? drawlist : [];
+        if (drawlist == null) {
+          drawlist = [];
+        }
+        this.drawlist = drawlist.map(function(call) {
+          return call.map(function(x) {
+            return _(x).clone();
+          });
+        });
         Drawing.__super__.constructor.call(this, scene);
         this.drawingBones = this.skelet.addBones([['HNDL', 0, 0, "h"]]);
       }
@@ -24054,7 +24074,7 @@ define("svginnerhtml", function(){});
           res["content"] = content;
         }
         content = _.str.trim($el.css('content'), " \t\n'");
-        if (content && content !== "non") {
+        if (content && content !== "none") {
           if (content[0] !== "{") {
             content = "{" + content + "}";
           }
@@ -24209,15 +24229,14 @@ define("svginnerhtml", function(){});
     };
     window.WebFontConfig = {
       custom: {
-        families: ["xkcd"],
-        urls: ["http://cmx.io/fonts/humor-sans.ttf"]
+        families: ["xkcd"]
       },
       active: function() {
         return launch();
       }
     };
     wf = document.createElement("script");
-    wf.src = ("https:" === document.location.protocol ? "https" : "http") + "://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js";
+    wf.src = "scripts/vendor/webfont.js";
     wf.type = "text/javascript";
     wf.async = "true";
     s = document.getElementsByTagName("script")[0];
