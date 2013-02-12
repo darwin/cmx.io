@@ -28526,9 +28526,181 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 }
 
 })( window );
+/*!
+ * jQuery Cookie Plugin v1.3.1
+ * https://github.com/carhartl/jquery-cookie
+ *
+ * Copyright 2013 Klaus Hartl
+ * Released under the MIT license
+ */
+(function (factory) {
+	if (typeof define === 'function' && define.amd && define.amd.jQuery) {
+		// AMD. Register as anonymous module.
+		define(['jquery'], factory);
+	} else {
+		// Browser globals.
+		factory(jQuery);
+	}
+}(function ($) {
+
+	var pluses = /\+/g;
+
+	function raw(s) {
+		return s;
+	}
+
+	function decoded(s) {
+		return decodeURIComponent(s.replace(pluses, ' '));
+	}
+
+	function converted(s) {
+		if (s.indexOf('"') === 0) {
+			// This is a quoted cookie as according to RFC2068, unescape
+			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		}
+		try {
+			return config.json ? JSON.parse(s) : s;
+		} catch(er) {}
+	}
+
+	var config = $.cookie = function (key, value, options) {
+
+		// write
+		if (value !== undefined) {
+			options = $.extend({}, config.defaults, options);
+
+			if (typeof options.expires === 'number') {
+				var days = options.expires, t = options.expires = new Date();
+				t.setDate(t.getDate() + days);
+			}
+
+			value = config.json ? JSON.stringify(value) : String(value);
+
+			return (document.cookie = [
+				encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
+				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+				options.path    ? '; path=' + options.path : '',
+				options.domain  ? '; domain=' + options.domain : '',
+				options.secure  ? '; secure' : ''
+			].join(''));
+		}
+
+		// read
+		var decode = config.raw ? raw : decoded;
+		var cookies = document.cookie.split('; ');
+		var result = key ? undefined : {};
+		for (var i = 0, l = cookies.length; i < l; i++) {
+			var parts = cookies[i].split('=');
+			var name = decode(parts.shift());
+			var cookie = decode(parts.join('='));
+
+			if (key && key === name) {
+				result = converted(cookie);
+				break;
+			}
+
+			if (!key) {
+				result[name] = converted(cookie);
+			}
+		}
+
+		return result;
+	};
+
+	config.defaults = {};
+
+	$.removeCookie = function (key, options) {
+		if ($.cookie(key) !== undefined) {
+			$.cookie(key, '', $.extend(options, { expires: -1 }));
+			return true;
+		}
+		return false;
+	};
+
+}));
 (function() {
-  var Editor, getGistUrl, getParameterByName,
+  var Editor, getGistUrl, getParameterByName, initializeHelp, initializeUndoRedo, updateControls,
     __slice = [].slice;
+
+  getParameterByName = function(name) {
+    var regex, regexS, results;
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    regexS = "[\\?&]" + name + "=([^&#]*)";
+    regex = new RegExp(regexS);
+    results = regex.exec(window.location.search);
+    if (results == null) {
+      return "";
+    } else {
+      return decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+  };
+
+  getGistUrl = function(id) {
+    return "https://api.github.com/gists/" + id;
+  };
+
+  initializeHelp = function() {
+    var updateHelp;
+    updateHelp = function() {
+      if ($.cookie('help') === "hidden") {
+        $("#help").css("display", "none");
+        return $("#help-icon").css("display", "block");
+      } else {
+        $("#help").css("display", "block");
+        return $("#help-icon").css("display", "none");
+      }
+    };
+    updateHelp();
+    $("#help .dismiss").on("click", function() {
+      $.cookie('help', 'hidden', {
+        expires: 30
+      });
+      return updateHelp();
+    });
+    return $("#help-icon .open").on("click", function() {
+      $.cookie('help', 'shown', {
+        expires: 30
+      });
+      return updateHelp();
+    });
+  };
+
+  updateControls = function() {
+    if ((typeof cmxref !== "undefined" && cmxref !== null ? cmxref.undoStack.length : void 0) > 0) {
+      $("#undo-button").attr("disabled", null);
+    } else {
+      $("#undo-button").attr("disabled", "disabled");
+    }
+    if ((typeof cmxref !== "undefined" && cmxref !== null ? cmxref.redoStack.length : void 0) > 0) {
+      return $("#redo-button").attr("disabled", null);
+    } else {
+      return $("#redo-button").attr("disabled", "disabled");
+    }
+  };
+
+  initializeUndoRedo = function() {
+    $("#undo-button").on("click", function() {
+      if (typeof cmxref !== "undefined" && cmxref !== null) {
+        cmxref.undo();
+      }
+      return updateControls();
+    });
+    return $("#redo-button").on("click", function() {
+      if (typeof cmxref !== "undefined" && cmxref !== null) {
+        cmxref.redo();
+      }
+      return updateControls();
+    });
+  };
+
+  window.messageFromCMX = function(event, cmx) {
+    switch (event) {
+      case 'cmx:ready':
+        window.cmxref = cmx;
+        cmx.makeEditable();
+        return updateControls();
+    }
+  };
 
   Editor = (function() {
 
@@ -28666,6 +28838,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         }, 200);
         set.on('cmx:updated', throttle(function() {
           var chunks, patched;
+          updateControls();
           invocations++;
           if (invocations === 1) {
             return;
@@ -28704,31 +28877,6 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
   })();
 
-  getParameterByName = function(name) {
-    var regex, regexS, results;
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    regexS = "[\\?&]" + name + "=([^&#]*)";
-    regex = new RegExp(regexS);
-    results = regex.exec(window.location.search);
-    if (results == null) {
-      return "";
-    } else {
-      return decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
-  };
-
-  getGistUrl = function(id) {
-    return "https://api.github.com/gists/" + id;
-  };
-
-  window.messageFromCMX = function(event, cmx) {
-    switch (event) {
-      case 'cmx:ready':
-        window.cmxref = cmx;
-        return cmx.makeEditable();
-    }
-  };
-
   $(function() {
     var editor, env, hash, src;
     Modernizr.Detectizr.detect();
@@ -28744,6 +28892,9 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     } else {
       $('#apply').append(" (CTRL+S)");
     }
+    initializeHelp();
+    initializeUndoRedo();
+    updateControls();
     console.log("editor started");
     editor = new Editor();
     window.cmxEditor = editor;
