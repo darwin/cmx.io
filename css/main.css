@@ -2,12 +2,33 @@ body {
   margin-top: 20px;
 }
 
+html {
+  height: 101%;
+}
+
 section {
   padding-top: 40px;
 }
 
 .container {
   width: 800px;
+}
+
+#error {
+  padding: 20px;
+}
+
+#comix {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+#comix iframe {
+  width: 100%;
+  height: 100%;
 }
 
 .icon-github {

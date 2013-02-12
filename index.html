@@ -31,49 +31,79 @@
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
 
-    <header class="hero-unit">
-      <div class="container">
-        <h1>Comix I/O</h1>
-        <p>Enables you to publish <a href="http://xkcd.com">xkcd-style</a> comixes using HTML-like markup.</p>
-        <div class="social-buttons-placeholder">
-          <ul class="bs-docs-social-buttons" style="display:none">
-            <li>
-              <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fcmx.io&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=332451499524" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
-            </li>
-            <li>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="cmx.io">Tweet</a>
-              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-            </li>
-            <li>
-              <div class="g-plusone" data-size="medium"></div>
-              <script type="text/javascript">
-                (function() {
-                  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-                  po.src = 'https://apis.google.com/js/plusone.js';
-                  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-                })();
-              </script>
-            </li>
-            <li>
-              <iframe src="http://ghbtns.com/github-btn.html?user=darwin&repo=cmx.js&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
-            </li>
-            <li>
-              <iframe src="http://ghbtns.com/github-btn.html?user=darwin&repo=cmx.js&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
-            </li>
-          </ul>
+    <div id="homepage" style="display:none">
+      <header class="hero-unit">
+        <div class="container">
+          <h1>Comix I/O</h1>
+          <p>Enables you to publish <a href="http://xkcd.com">xkcd-style</a> comixes using HTML-like markup.</p>
+          <div class="social-buttons-placeholder">
+            <ul class="bs-docs-social-buttons" style="display:none">
+              <li>
+                <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fcmx.io&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=332451499524" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+              </li>
+              <li>
+                <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="cmx.io">Tweet</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              </li>
+              <li>
+                <div class="g-plusone" data-size="medium"></div>
+                <script type="text/javascript">
+                  (function() {
+                    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                    po.src = 'https://apis.google.com/js/plusone.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+                  })();
+                </script>
+              </li>
+              <li>
+                <iframe src="http://ghbtns.com/github-btn.html?user=darwin&repo=cmx.js&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+              </li>
+              <li>
+                <iframe src="http://ghbtns.com/github-btn.html?user=darwin&repo=cmx.js&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
+              </li>
+            </ul>
+          </div>
+          <a href="/edit"><img class="splash" src="img/cmx-preview.png"/></a>
+          <p class="btn-group">
+            <a class="btn btn-large btn-primary" href="/edit"><i class="icon-white icon-move"></i> Launch Editor</a>
+            <a class="btn btn-large" href="https://github.com/darwin/cmx.js/wiki"><i class="icon-github"></i> Read Docs</a>
+          </p>
         </div>
-        <a href="/edit"><img class="splash" src="img/cmx-preview.png"/></a>
-        <p class="btn-group">
-          <a class="btn btn-large btn-primary" href="/edit"><i class="icon-white icon-move"></i> Launch Editor</a>
-          <a class="btn btn-large" href="https://github.com/darwin/cmx.js/wiki"><i class="icon-github"></i> Read Docs</a>
-        </p>
+      </header>
+
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+      <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
+
+      <script src="js/vendor/bootstrap.min.js"></script>
+
+      <div class="container discussion">
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'cmxio'; // required: replace example with your forum shortname
+            var disqus_url = "http://cmx.io/";
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
       </div>
-    </header>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
-
-    <script src="js/vendor/bootstrap.min.js"></script>
+    </div>
+    <div id="comix" style="display:none">
+    </div>
+    <div id="error" style="display:none">
+      <h2>Unable to read gist <span id="error-gist-number"></span></h2>
+      <pre id="error-response"></pre>
+      <p>Please make sure that</p>
+      <ul>
+        <li>the gist <a id="error-gist-link" href=""></a> really exists</li>
+        <li>the gist contains <a id="error-gist-index-link">index.html</a> file with comix source code</li>
+        <li>your browser is not over <a href="http://developer.github.com/v3/#rate-limiting">GitHub API limit quota</a></li>
+      </ul>
+      <p>Here is an example of a working gist <a href="http://cmx.io/#4770953">http://cmx.io/#4770953</a> which reads <a href="https://gist.github.com/4770953">https://gist.github.com/4770953</a>.</p>
+    </div>
 
     <script type="text/javascript">
       var _gaq = _gaq || [];
@@ -94,20 +124,50 @@
     });
     </script>
 
+    <script type="text/javascript">
+      (function() {
+        var hash = window.location.hash.substring(1);
+        if (!hash) {
+          $("#homepage").css("display", "block");
+          return;
+        }
 
-    <div class="container discussion">
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-          var disqus_shortname = 'cmxio'; // required: replace example with your forum shortname
-          var disqus_url = "http://cmx.io/";
-          (function() {
-              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-              dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-          })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-    </div>
+        var src = "https://api.github.com/gists/" + hash;
+
+        $(document).ajaxError(function(event, xhr) {
+          $("#error").css("display", "block");
+          $('#error-response').text(xhr.responseText);
+          $('#error-gist-number').text('#' + hash);
+          $('#error-gist-link').attr('href', src).text(src);
+          $('#error-gist-index-link').attr('href', "https://gist.github.com/" + hash);
+          return console.log("failed to fetch the content");
+        });
+
+        console.log("fetching " + src + "...");
+        return $.get(src, function(content) {
+          var target, _ref, _ref1;
+          console.log("got", content);
+          target = src;
+          if (typeof content === "object") {
+            target = content.html_url;
+            content = (_ref = content.files) != null ? (_ref1 = _ref["index.html"]) != null ? _ref1.content : void 0 : void 0;
+          }
+
+          console.log(content);
+
+          var $stage = $("<iframe/>", {
+            "class": "stage",
+            frameborder: 0,
+            allowTransparency: "true"
+          });
+          $("#comix").append($stage);
+          doc = $stage.contents().get(0);
+          doc.open();
+          doc.write(content);
+          doc.close();
+          $("#comix").css("display", "block");
+        });
+      })();
+    </script>
   </body>
 </html>
