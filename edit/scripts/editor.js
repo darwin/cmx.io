@@ -28881,9 +28881,15 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     var editor, env, hash, src;
     Modernizr.Detectizr.detect();
     env = Modernizr.Detectizr.device;
-    if (env.browserEngine === "webkit") {
+    if (env.browserEngine === "webkit" || $.cookie("letmein")) {
       $(".supported").css("display", "block");
     } else {
+      $("#pass-button").on("click", function() {
+        $.cookie("letmein", "now!", {
+          expires: 30
+        });
+        return window.location.reload();
+      });
       $(".unsupported").css("display", "block");
       return;
     }
