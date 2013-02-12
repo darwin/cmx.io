@@ -19486,6 +19486,36 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 })();
 define("d3", function(){});
 
+(function() {
+  var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  define('d3ext',[],function() {
+    return function() {
+      return d3.selection.prototype.parents = function(selector) {
+        var items, klass, p, res;
+        res = [];
+        p = this.node();
+        while (p = p.parentNode) {
+          try {
+            klass = d3.select(p).attr("class");
+          } catch (e) {
+
+          }
+          if (!klass) {
+            continue;
+          }
+          items = klass.split(" ");
+          if (__indexOf.call(items, selector) >= 0) {
+            res.push(p);
+          }
+        }
+        return res;
+      };
+    };
+  });
+
+}).call(this);
+
 //     Underscore.js 1.4.3
 //     http://underscorejs.org
 //     (c) 2009-2012 Jeremy Ashkenas, DocumentCloud Inc.
@@ -23036,7 +23066,9 @@ define("svginnerhtml", function(){});
       };
 
       Entity.prototype.getFrame = function() {
-        return _.str.trim(this.t.replace("translate(0,0)", "").replace("rotate(0)", "").replace("skewX(0)", "").replace("scale(1,1)", "").replace(")", ") "));
+        var re;
+        re = /\)([^ ])/;
+        return _.str.trim(this.t.replace("translate(0,0)", "").replace("rotate(0)", "").replace("skewX(0)", "").replace("scale(1,1)", "").replace(re, ") $1"));
       };
 
       Entity.prototype.getEffectiveFrame = function() {
@@ -24170,77 +24202,63 @@ define("svginnerhtml", function(){});
 }).call(this);
 
 (function() {
-  var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   require.config({
     paths: {
       'jquery': 'vendor/jquery',
-      'd3': '../components/d3/d3',
+      'd3': 'vendor/d3/d3',
       'svginnerhtml': 'vendor/svginnerhtml',
-      'backbone': '../components/backbone/backbone',
-      'underscore': '../components/underscore-amd/underscore',
-      'underscore.string': '../components/underscore.string/lib/underscore.string',
-      'cmx': '../app/lib/cmx'
+      'underscore': 'vendor/underscore-amd/underscore',
+      'underscore.string': 'vendor/underscore.string/lib/underscore.string',
+      'cmx': '../app/lib/cmx',
+      'd3ext': 'd3ext'
     }
   });
 
-  require(['jquery', 'd3', 'underscore', 'underscore.string', 'svginnerhtml', 'cmx'], function(_jq, _d3, underscore, underscore_string, _svginnerhtml, cmx) {
-    var launch, s, wf;
-    console.log("cmx loaded");
-    $("body").trigger("cmx:loaded", cmx);
-    underscore.string = underscore.str = underscore_string;
-    d3.selection.prototype.parents = function(selector) {
-      var items, klass, p, res;
-      res = [];
-      p = this.node();
-      while (p = p.parentNode) {
-        try {
-          klass = d3.select(p).attr("class");
-        } catch (e) {
-
+  require(['jquery', 'd3', 'd3ext', 'underscore', 'underscore.string', 'svginnerhtml', 'cmx'], function(_jq, _d3, d3ext, underscore, underscoreString, _svginnerhtml, cmx) {
+    var launch, loadWebFonts, publishEvent;
+    publishEvent = function(name) {
+      console.log("" + name);
+      $("body").trigger(name, cmx);
+      return typeof parent !== "undefined" && parent !== null ? typeof parent.messageFromCMX === "function" ? parent.messageFromCMX(name, cmx) : void 0 : void 0;
+    };
+    loadWebFonts = function(continuation) {
+      var s, wf;
+      window.WebFontConfig = {
+        custom: {
+          families: ["xkcd"]
+        },
+        active: function() {
+          return typeof continuation === "function" ? continuation() : void 0;
         }
-        if (!klass) {
-          continue;
-        }
-        items = klass.split(" ");
-        if (__indexOf.call(items, selector) >= 0) {
-          res.push(p);
-        }
-      }
-      return res;
+      };
+      wf = document.createElement("script");
+      wf.src = "scripts/vendor/webfont.js";
+      wf.type = "text/javascript";
+      wf.async = "true";
+      s = document.getElementsByTagName("script")[0];
+      return s.parentNode.insertBefore(wf, s);
     };
     launch = function() {
-      var $scene, parser, sceneModel, scenes, _i, _len;
+      var $scene, parser, sceneModel, sceneModels, _i, _len;
+      cmx.previousCmx = window.cmx;
       window.cmx = cmx;
-      console.log("cmx launched");
-      $("body").trigger("cmx:launched", cmx);
+      publishEvent("cmx:launched");
       parser = new cmx.Parser(cmx);
-      scenes = parser.parseDoc($("body"));
-      for (_i = 0, _len = scenes.length; _i < _len; _i++) {
-        sceneModel = scenes[_i];
+      sceneModels = parser.parseDoc($("body"));
+      for (_i = 0, _len = sceneModels.length; _i < _len; _i++) {
+        sceneModel = sceneModels[_i];
         $scene = $(sceneModel.source);
         console.log("model for #" + ($scene.attr("id")) + ":", this);
         sceneModel.debugReport(2);
         sceneModel.materialize($scene);
       }
-      console.log("cmx ready", cmx);
-      $("body").trigger("cmx:ready", cmx);
-      return typeof parent !== "undefined" && parent !== null ? typeof parent.messageFromCMX === "function" ? parent.messageFromCMX("cmx:ready", cmx) : void 0 : void 0;
+      return publishEvent("cmx:ready");
     };
-    window.WebFontConfig = {
-      custom: {
-        families: ["xkcd"]
-      },
-      active: function() {
-        return launch();
-      }
-    };
-    wf = document.createElement("script");
-    wf.src = "scripts/vendor/webfont.js";
-    wf.type = "text/javascript";
-    wf.async = "true";
-    s = document.getElementsByTagName("script")[0];
-    return s.parentNode.insertBefore(wf, s);
+    publishEvent("cmx:loaded");
+    underscore.string = underscore.str = underscoreString;
+    d3ext();
+    return loadWebFonts(launch);
   });
 
 }).call(this);
