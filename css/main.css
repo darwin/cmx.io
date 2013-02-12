@@ -51,10 +51,25 @@ section {
   font-weight: normal;
 }
 
-.splash {
+.splash-box {
+  position: relative;
+  margin-bottom: 50px;
+}
+
+.splash-image {
   display: block;
   margin: 20px auto;
   width: 800px;
+}
+
+.source-link {
+  position: absolute;
+  bottom: -12px;
+  left: 18px;
+  font-size: 11px;
+  color: #aaa;
+  text-align: left;
+  font-weight: bold;
 }
 
 .social-buttons-placeholder {
