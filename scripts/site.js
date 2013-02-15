@@ -1855,6 +1855,7 @@ window.Modernizr = (function( window, document, undefined ) {
   var displayHomepage, loadAndDisplayGist;
 
   displayHomepage = function() {
+    $('html').addClass('force-vscrollbar');
     $("#homepage").css("display", "block");
     return _gaq.push(['_trackPageview']);
   };
