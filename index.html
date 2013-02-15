@@ -68,26 +68,18 @@
         </div>
       </header>
 
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-      <script>window.jQuery || document.write('<script src="scripts/vendor/jquery.js"><\/script>')</script>
-      <script src="scripts/vendor/modernizr.js"></script>
-
       <div class="container discussion">
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
-            var disqus_shortname = 'cmxio'; // required: replace example with your forum shortname
-            var disqus_url = "http://cmx.io/";
-            (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
         <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
       </div>
     </div>
+    <div id="comix-spinner" style="display:none">
+    </div>
     <div id="comix" style="display:none">
+      <div id="comix-placeholder">
+        <div id="comix-banner">
+          <span class="comix-title"></span><span class="comix-author"></span><span class="comix-date"></span>
+        </div>
+      </div>
     </div>
     <div id="error" style="display:none">
       <h2>Unable to read gist <span id="error-gist-number"></span></h2>
@@ -101,71 +93,21 @@
       <p>Here is an example of a working gist <a href="http://cmx.io/#4770953">http://cmx.io/#4770953</a> which reads <a href="https://gist.github.com/4770953">https://gist.github.com/4770953</a>.</p>
     </div>
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="scripts/vendor/jquery.js"><\/script>')</script>
+
+    <script src="scripts/site.js"></script>
+
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-38409764-1']);
-      _gaq.push(['_trackPageview']);
+      // we will tracke pageview later in our boot code, depending on gist situation
+      // _gaq.push(['_trackPageview']);
       (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
     </script>
-    <script>
-    $(function() {
-      var fn = function() {
-        $(".bs-docs-social-buttons").css('opacity', 0).css("display", "block").animate({'opacity': 1});
-      };
-      setTimeout(fn, 2000);
-    });
-    </script>
-
-    <script type="text/javascript">
-      (function() {
-        var hash = window.location.hash.substring(1);
-        if (!hash) {
-          $("#homepage").css("display", "block");
-          return;
-        }
-
-        var src = "https://api.github.com/gists/" + hash;
-
-        $(document).ajaxError(function(event, xhr) {
-          $("#error").css("display", "block");
-          $('#error-response').text(xhr.responseText);
-          $('#error-gist-number').text('#' + hash);
-          $('#error-gist-link').attr('href', src).text(src);
-          $('#error-gist-index-link').attr('href', "https://gist.github.com/" + hash);
-          return console.log("failed to fetch the content");
-        });
-
-        console.log("fetching " + src + "...");
-        return $.get(src, function(content) {
-          var target, _ref, _ref1;
-          console.log("got", content);
-          target = src;
-          if (typeof content === "object") {
-            target = content.html_url;
-            content = (_ref = content.files) != null ? (_ref1 = _ref["index.html"]) != null ? _ref1.content : void 0 : void 0;
-          }
-
-          console.log(content);
-
-          var $stage = $("<iframe/>", {
-            "class": "stage",
-            frameborder: 0,
-            allowTransparency: "true"
-          });
-          $("#comix").append($stage);
-          doc = $stage.contents().get(0);
-          doc.open();
-          doc.write(content);
-          doc.close();
-          $("#comix").css("display", "block");
-        });
-      })();
-    </script>
-
-    <script src="scripts/site.js"></script>
   </body>
 </html>
