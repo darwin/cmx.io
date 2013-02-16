@@ -1917,7 +1917,7 @@ window.Modernizr = (function( window, document, undefined ) {
         if (content.description) {
           description = content.description;
         }
-        author = (_ref6 = content.user) != null ? _ref6.login : void 0;
+        author = ((_ref6 = content.user) != null ? _ref6.login : void 0) || "anonymous";
         authorUrl = content.html_url;
         d = new Date(content.created_at);
         date = d.format("mmm d, yyyy");
