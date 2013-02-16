@@ -24223,21 +24223,29 @@ define("svginnerhtml", function(){});
       return typeof parent !== "undefined" && parent !== null ? typeof parent.messageFromCMX === "function" ? parent.messageFromCMX(name, cmx) : void 0 : void 0;
     };
     loadWebFonts = function(continuation) {
-      var s, wf;
+      var alreadyCalled, checkIfLoaderIsBroken, s, wf;
+      alreadyCalled = false;
       window.WebFontConfig = {
         custom: {
           families: ["xkcd"]
         },
         active: function() {
+          alreadyCalled = true;
           return typeof continuation === "function" ? continuation() : void 0;
         }
       };
       wf = document.createElement("script");
-      wf.src = "//ajax.googleapis.com/ajax/libs/webfont/1.1.2/webfont.js";
+      wf.src = "//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js";
       wf.type = "text/javascript";
       wf.async = "true";
       s = document.getElementsByTagName("script")[0];
-      return s.parentNode.insertBefore(wf, s);
+      s.parentNode.insertBefore(wf, s);
+      checkIfLoaderIsBroken = function() {
+        if (!alreadyCalled) {
+          return typeof continuation === "function" ? continuation() : void 0;
+        }
+      };
+      return setTimeout(checkIfLoaderIsBroken, 2000);
     };
     launch = function() {
       var $scene, parser, sceneModel, sceneModels, _i, _len;

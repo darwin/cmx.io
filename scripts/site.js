@@ -1863,6 +1863,7 @@ window.Modernizr = (function( window, document, undefined ) {
   loadAndDisplayGist = function(gistId) {
     var spinner, spinnerOpts, src;
     $("#comix-spinner").show();
+    document.title = "Comix #" + gistId;
     spinnerOpts = {
       lines: 10,
       length: 5,
@@ -1953,10 +1954,6 @@ window.Modernizr = (function( window, document, undefined ) {
         switch (event) {
           case 'cmx:ready':
             window.cmxref = cmx;
-            $comix.css({
-              opacity: 0,
-              display: "block"
-            });
             $comix.animate({
               opacity: 1
             });
@@ -1994,6 +1991,10 @@ window.Modernizr = (function( window, document, undefined ) {
             });
         }
       };
+      $comix.css({
+        opacity: 0,
+        display: "block"
+      });
       doc = $stage.contents().get(0);
       doc.open();
       doc.write(comix);
@@ -2028,6 +2029,7 @@ window.Modernizr = (function( window, document, undefined ) {
     wrapper = $("<div/>").attr('id', "disqus_thread");
     if (window.gistId) {
       $('#comix').append(wrapper);
+      window.disqus_title = "Comix #" + window.gistId;
     } else {
       $('.discussion').prepend(wrapper);
     }
