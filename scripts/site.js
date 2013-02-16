@@ -1852,12 +1852,32 @@ window.Modernizr = (function( window, document, undefined ) {
 }).call(this);
 
 (function() {
-  var displayHomepage, loadAndDisplayGist;
+  var displayHomepage, loadAndDisplayGist, loadDisqus;
+
+  loadDisqus = function() {
+    var dsq, wrapper;
+    window.disqus_url = "http://cmx.io/";
+    if (window.gistId) {
+      window.disqus_url += "gist/" + window.gistId;
+    }
+    wrapper = $("<div/>").attr('id', "disqus_thread");
+    if (window.gistId) {
+      $('#comix').append(wrapper);
+    } else {
+      $('.discussion').prepend(wrapper);
+    }
+    dsq = document.createElement("script");
+    dsq.type = "text/javascript";
+    dsq.async = true;
+    dsq.src = "http://cmxio.disqus.com/embed.js";
+    return (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(dsq);
+  };
 
   displayHomepage = function() {
     $('html').addClass('force-vscrollbar');
     $("#homepage").css("display", "block");
-    return _gaq.push(['_trackPageview']);
+    _gaq.push(['_trackPageview']);
+    return loadDisqus();
   };
 
   loadAndDisplayGist = function(gistId) {
@@ -1924,6 +1944,7 @@ window.Modernizr = (function( window, document, undefined ) {
         date = d.format("mmm d, yyyy");
       }
       description = description.split("\n")[0];
+      window.disqus_title = description || ("Comix #" + gistId);
       $stage = $("<iframe/>", {
         "class": "stage",
         scrolling: "no",
@@ -1986,9 +2007,10 @@ window.Modernizr = (function( window, document, undefined ) {
             $comix.css({
               width: "" + rW + "px"
             });
-            return $placeholder.css({
+            $placeholder.css({
               width: "" + rW + "px"
             });
+            return loadDisqus();
         }
       };
       $comix.css({
@@ -2014,30 +2036,6 @@ window.Modernizr = (function( window, document, undefined ) {
     } else {
       return displayHomepage();
     }
-  });
-
-}).call(this);
-
-(function() {
-
-  $(function() {
-    var dsq, wrapper;
-    window.disqus_url = "http://cmx.io/";
-    if (window.gistId) {
-      window.disqus_url += "gist/" + window.gistId;
-    }
-    wrapper = $("<div/>").attr('id', "disqus_thread");
-    if (window.gistId) {
-      $('#comix').append(wrapper);
-      window.disqus_title = "Comix #" + window.gistId;
-    } else {
-      $('.discussion').prepend(wrapper);
-    }
-    dsq = document.createElement("script");
-    dsq.type = "text/javascript";
-    dsq.async = true;
-    dsq.src = "http://cmxio.disqus.com/embed.js";
-    return (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(dsq);
   });
 
 }).call(this);
