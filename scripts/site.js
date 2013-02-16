@@ -1881,7 +1881,7 @@ window.Modernizr = (function( window, document, undefined ) {
   };
 
   loadAndDisplayGist = function(gistId) {
-    var spinner, spinnerOpts, src;
+    var fail, spinner, spinnerOpts, src;
     $("#comix-spinner").show();
     document.title = "Comix #" + gistId;
     spinnerOpts = {
@@ -1908,16 +1908,17 @@ window.Modernizr = (function( window, document, undefined ) {
     if (gistId === "test") {
       src = "gist-test.html";
     }
-    $(document).ajaxError(function(event, xhr) {
+    fail = function(event, xhr) {
       spinner.stop();
       $("#error").css("display", "block");
-      $("#error-response").text(xhr.responseText);
+      $("#error-response").text(xhr != null ? xhr.responseText : void 0);
       $("#error-gist-number").text("#" + gistId);
       $("#error-gist-link").attr("href", src).text(src);
       $("#error-gist-index-link").attr("href", "https://gist.github.com/" + gistId);
       _gaq.push(['_trackPageview', '/error/' + gistId]);
       return console.log("failed to fetch the content");
-    });
+    };
+    $(document).ajaxError(fail);
     console.log("fetching " + src + "...");
     return $.get(src, function(content) {
       var $banner, $comix, $placeholder, $stage, author, authorUrl, comix, d, date, description, doc, footer, header, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6;
@@ -1932,8 +1933,18 @@ window.Modernizr = (function( window, document, undefined ) {
         authorUrl = "https://gist.github.com/4770953";
         date = "Jan 16, 2013";
       } else {
+        if (typeof content === "string") {
+          try {
+            content = JSON.parse(content);
+          } catch (e) {
+            return fail();
+          }
+        }
         header = (_ref = content.files) != null ? (_ref1 = _ref["header.html"]) != null ? _ref1.content : void 0 : void 0;
         comix = (_ref2 = content.files) != null ? (_ref3 = _ref2["index.html"]) != null ? _ref3.content : void 0 : void 0;
+        if (!comix) {
+          fail();
+        }
         footer = (_ref4 = content.files) != null ? (_ref5 = _ref4["footer.html"]) != null ? _ref5.content : void 0 : void 0;
         if (content.description) {
           description = content.description;
