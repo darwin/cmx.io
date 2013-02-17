@@ -2244,7 +2244,10 @@ window.Modernizr = (function( window, document, undefined ) {
         header = (_ref = content.files) != null ? (_ref1 = _ref["header.html"]) != null ? _ref1.content : void 0 : void 0;
         comix = (_ref2 = content.files) != null ? (_ref3 = _ref2["index.html"]) != null ? _ref3.content : void 0 : void 0;
         if (!comix) {
-          fail();
+          fail(null, {
+            responseText: "index.html file not found"
+          });
+          return;
         }
         footer = (_ref4 = content.files) != null ? (_ref5 = _ref4["footer.html"]) != null ? _ref5.content : void 0 : void 0;
         if (content.description) {
