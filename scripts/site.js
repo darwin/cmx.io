@@ -2210,6 +2210,7 @@ window.Modernizr = (function( window, document, undefined ) {
     }
     fail = function(event, xhr) {
       spinner.stop();
+      $("#comix").css("display", "none");
       $("#error").css("display", "block");
       $("#error-response").text(xhr != null ? xhr.responseText : void 0);
       $("#error-gist-number").text("#" + gistId);
