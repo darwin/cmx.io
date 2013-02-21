@@ -1,1 +1,132 @@
-body,html{widht:100%;height:100%;padding:0;margin:0;font-family:arial;font-size:20px}.unsupported{margin:20px}.unsupported .note{font-size:12px;color:#999}.error{padding:20px}#desk .ace_editor{font-size:12px;line-heiht:1em;font-family:monospace}#stage-wrapper{position:absolute;top:0;bottom:50%;left:0;right:0}.stage{width:100%;height:100%}.stage-floater{position:absolute;top:0;bottom:0;left:0;right:0;display:block}#desk{background-color:#fff;position:absolute;top:50%;bottom:0;left:0;right:0;display:block;border-top:2px solid #999}#editor{position:absolute;top:0;bottom:30px;left:0;right:0;border-radius:2px}#status{border-top:1px solid #999;position:absolute;bottom:0;height:29px;left:0;right:0;font-size:14px;line-height:29px}.target{padding:0 10px}#apply{position:absolute;bottom:5px;right:10px}#error-gist-number{color:red}#help,#help-icon{position:absolute;padding:0 20px;top:26px;right:20px;font-size:12px;background-color:rgba(230,230,100,.9)}#help .dismiss{position:absolute;right:20px;top:10px;cursor:pointer;font-weight:700}#help-icon .open{position:absolute;right:20px;top:10px;cursor:pointer;font-weight:700}#controls{position:absolute;padding:0 20px;top:2px;right:0;font-size:14px}.control-button{width:60px}
+body, html {
+  widht: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+
+  font-family: arial;
+  font-size: 20px;
+}
+
+.unsupported {
+  margin: 20px;
+}
+
+.unsupported .note {
+  font-size: 12px;
+  color: #999;
+}
+
+.error {
+  padding: 20px;
+}
+
+#desk .ace_editor {
+  font-size: 12px;
+  line-heiht: 1em;
+  font-family: monospace;
+}
+
+#stage-wrapper {
+  position: absolute;
+  top: 0px;
+  bottom: 50%;
+  left: 0px;
+  right: 0px;
+}
+
+.stage {
+  width: 100%;
+  height: 100%;
+}
+
+.stage-floater {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  display: block;
+}
+
+#desk {
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  display: block;
+  border-top: 2px solid #999;
+}
+
+#editor {
+  position: absolute;
+  top: 0px;
+  bottom: 30px;
+  left: 0px;
+  right: 0px;
+  border-radius: 2px;
+}
+
+#status {
+  border-top: 1px solid #999;
+  position: absolute;
+  bottom: 0px;
+  height: 29px;
+  left: 0px;
+  right: 0px;
+  font-size: 14px;
+  line-height: 29px;
+}
+
+.target {
+  padding: 0px 10px;
+}
+
+#apply {
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+}
+
+#error-gist-number {
+  color: red;
+}
+
+#help, #help-icon {
+  position: absolute;
+  padding: 0px 20px;
+  top: 26px;
+  right: 20px;
+  font-size: 12px;
+  background-color: rgba(230,230,100,0.9);
+}
+
+#help .dismiss {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#help-icon .open {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#controls {
+  position: absolute;
+  padding: 0px 20px;
+  top: 2px;
+  right: 0px;
+  font-size: 14px;
+}
+
+.control-button {
+  width: 60px;
+}
